@@ -34,7 +34,7 @@
 $GLOBALS['BE_MOD']['content']['downloadarchiv'] = array
 		(
 			'tables' => array('tl_downloadarchiv', 'tl_downloadarchivitems'),
-			'icon'   => 'system/modules/downloadarchive/html/downloadarchiv.gif'
+			'icon'   => 'system/modules/downloadarchive/assets/downloadarchiv.gif'
 		);
 
 /**

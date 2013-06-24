@@ -42,7 +42,16 @@ $GLOBALS['TL_DCA']['tl_downloadarchivitems'] = array
 	(
 		'dataContainer'               => 'Table',
 		'ptable'					  => 'tl_downloadarchiv',
-		'enableVersioning'            => true
+		'enableVersioning'            => true,
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+                'pid' => 'index',
+                'title' => 'index'
+            )
+        )
 	),
 
 	// List
@@ -128,39 +137,60 @@ $GLOBALS['TL_DCA']['tl_downloadarchivitems'] = array
 	// Fields
 	'fields' => array
 	(
-		'title' => array
+        'id' => array
+        (
+            'sql'                     => "int(10) unsigned NOT NULL auto_increment"
+        ),
+        'pid' => array
+        (
+            'sql'                     => "int(10) unsigned NOT NULL default '0'"
+        ),
+        'sorting' => array
+        (
+            'sql'                     => "int(10) unsigned NOT NULL default '0'"
+        ),
+        'tstamp' => array
+        (
+            'sql'                     => "int(10) unsigned NOT NULL default '0'"
+        ),
+        'title' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['title'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
+            'sql'                     => "varchar(255) NOT NULL default ''"
 		),
 		'description' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['description'],
 			'exclude'                 => true,
 			'inputType'               => 'textarea',
-			'eval'                    => array('rte'=>'tinyMCE')
+			'eval'                    => array('rte'=>'tinyMCE'),
+            'sql'                     => "text NULL"
 		),
 		'singleSRC' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['singleSRC'],
 			'exclude'                 => true,
 			'inputType'               => 'fileTree',
-			'eval'                    => array('mandatory'=>true,'files'=>true,'fieldType'=>'radio')
+			'eval'                    => array('mandatory'=>true,'files'=>true,'fieldType'=>'radio'),
+            'sql'                     => "varchar(255) NOT NULL default ''"
 		),
 		'protected' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['protected'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
-			'eval'                    => array('submitOnChange'=>true)
+			'eval'                    => array('submitOnChange'=>true),
+            'sql'                     => "char(1) NOT NULL default ''"
 		),
 		'guests' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['guests'],
 			'exclude'                 => true,
-			'inputType'               => 'checkbox'
+			'inputType'               => 'checkbox',
+            'sql'                     => "char(1) NOT NULL default ''"
 		),
 		'groups' => array
 		(
@@ -168,21 +198,24 @@ $GLOBALS['TL_DCA']['tl_downloadarchivitems'] = array
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 			'foreignKey'              => 'tl_member_group.name',
-			'eval'                    => array('multiple'=>true)
+			'eval'                    => array('multiple'=>true),
+            'sql'                     => "blob NULL"
 		),
 		'addImage' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['addImage'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
-			'eval'                    => array('submitOnChange'=>true)
+			'eval'                    => array('submitOnChange'=>true),
+            'sql'                     => "char(1) NOT NULL default ''"
 		),
 		'imgSRC' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_content']['singleSRC'],
 			'exclude'                 => true,
 			'inputType'               => 'fileTree',
-			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'mandatory'=>true)
+			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'mandatory'=>true),
+            'sql'                     => "varchar(255) NOT NULL default ''"
 		),
 		'size' => array
 		(
@@ -192,14 +225,16 @@ $GLOBALS['TL_DCA']['tl_downloadarchivitems'] = array
 			/*'options'                 => array('crop', 'proportional', 'box'),*/
 			'options'                 => (VERSION < 2.11 ? array('crop', 'proportional', 'box') : $GLOBALS['TL_CROP']),
 			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
-			'eval'                    => array('multiple'=>true, 'size'=>2, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50')
+			'eval'                    => array('multiple'=>true, 'size'=>2, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
+            'sql'                     => "varchar(255) NOT NULL default ''"
 		),
 		'alt' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_content']['alt'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'rgxp'=>'extnd', 'maxlength'=>255, 'tl_class'=>'long')
+			'eval'                    => array('mandatory'=>true, 'rgxp'=>'extnd', 'maxlength'=>255, 'tl_class'=>'long'),
+            'sql'                     => "varchar(255) NOT NULL default ''"
 		),
 		'caption' => array
 		(
@@ -207,7 +242,8 @@ $GLOBALS['TL_DCA']['tl_downloadarchivitems'] = array
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'extnd', 'maxlength'=>255, 'tl_class'=>'long')
+			'eval'                    => array('rgxp'=>'extnd', 'maxlength'=>255, 'tl_class'=>'long'),
+            'sql'                     => "varchar(255) NOT NULL default ''"
 		),
 		'floating' => array
 		(
@@ -216,7 +252,8 @@ $GLOBALS['TL_DCA']['tl_downloadarchivitems'] = array
 			'inputType'               => 'radioTable',
 			'options'                 => array('above', 'left', 'right'),
 			'eval'                    => array('cols'=>3, 'tl_class'=>'w50'),
-			'reference'               => &$GLOBALS['TL_LANG']['MSC']
+			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
+            'sql'                     => "varchar(32) NOT NULL default ''"
 		),
 		'imagemargin' => array
 		(
@@ -224,7 +261,8 @@ $GLOBALS['TL_DCA']['tl_downloadarchivitems'] = array
 			'exclude'                 => true,
 			'inputType'               => 'trbl',
 			'options'                 => array('px', '%', 'em', 'pt', 'pc', 'in', 'cm', 'mm'),
-			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50')
+			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'sql'                     => "varchar(255) NOT NULL default ''"
 		),
 		'useImage' => array
 		(
@@ -234,27 +272,31 @@ $GLOBALS['TL_DCA']['tl_downloadarchivitems'] = array
 			'inputType'               => 'radio',
 			'options'				  => array('0','1','2'),
 			'reference'               => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['useImageReference'],
-			'eval'					  => array('tl_class'=>'w50')
+			'eval'					  => array('tl_class'=>'w50'),
+            'sql'                     => "char(1) NOT NULL default '0'"
 		),
 		'published' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['published'],
 			'exclude'                 => true,
-			'inputType'               => 'checkbox'
+			'inputType'               => 'checkbox',
+            'sql'                     => "char(1) NOT NULL default '0'"
 		),
 		'start' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['start'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'w50 wizard')
+			'eval'                    => array('rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
+            'sql'                     => "varchar(10) NOT NULL default ''"
 		),
 		'stop' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['stop'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'w50 wizard')
+			'eval'                    => array('rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
+            'sql'                     => "varchar(10) NOT NULL default ''"
 		)
 	)
 );
