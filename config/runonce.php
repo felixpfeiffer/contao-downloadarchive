@@ -18,10 +18,9 @@ class DownloadarchiveRunonce extends Controller
     {
         $this->import('Database');
 
-        if (!$this->Database->fieldExists('languageAlias', 'tl_page'))
+        if ($this->Database->tabelExists('tl_downloadarchiv') && $this->Database->tabelExists('tl_downloadarchivitems'))
         {
-            $this->Database->query("ALTER TABLE tl_page ADD `languageAlias` varchar(8) NOT NULL default ''");
-            $this->Database->prepare("UPDATe tl_page SET languageAlias=? WHERE type='root'")->execute($GLOBALS['TL_CONFIG']['languageAlias']);
+            $this->Database->execute("RENAME TABLE tl_downloadarchiv TO tl_downloadarchive, tl_downloadarchivitems TO tl_downloadarchiveitems;");
         }
     }
 }
