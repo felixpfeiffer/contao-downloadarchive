@@ -31,10 +31,10 @@
  * Add back end modules
  */
 
-$GLOBALS['BE_MOD']['content']['downloadarchiv'] = array
+$GLOBALS['BE_MOD']['content']['downloadarchive'] = array
 		(
 			'tables' => array('tl_downloadarchiv', 'tl_downloadarchivitems'),
-			'icon'   => 'system/modules/downloadarchive/assets/downloadarchiv.gif'
+			'icon'   => 'system/modules/downloadarchive/assets/downloadarchive.gif'
 		);
 
 /**
@@ -44,14 +44,14 @@ array_insert($GLOBALS['FE_MOD'], 4, array
 (
 	'application' => array
 	(
-		'downloadarchiv'   => 'ModuleDownloadArchiv'
+		'downloadarchive'   => 'ModuleDownloadarchive'
 	)
 ));
 
 /**
  * Content Element
  */
-$GLOBALS['TL_CTE']['files']['downloadarchiv'] = 'ContentDownloadarchiv';
+$GLOBALS['TL_CTE']['files']['downloadarchive'] = 'ContentDownloadarchive';
 
 /**
  * Add permissions

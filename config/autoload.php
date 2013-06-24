@@ -17,10 +17,10 @@
 ClassLoader::addClasses(array
 (
 	// Elements
-	'ContentDownloadarchiv' => 'system/modules/downloadarchive/elements/ContentDownloadarchiv.php',
+	'ContentDownloadarchive' => 'system/modules/downloadarchive/elements/ContentDownloadarchive.php',
 
 	// Modules
-	'ModuleDownloadArchiv'  => 'system/modules/downloadarchive/modules/ModuleDownloadArchiv.php',
+	'ModuleDownloadarchive'  => 'system/modules/downloadarchive/modules/ModuleDownloadarchive.php',
 ));
 
 

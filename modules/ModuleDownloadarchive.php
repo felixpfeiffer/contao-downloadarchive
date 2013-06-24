@@ -34,7 +34,7 @@
  * @author     Felix Pfeiffer :: Neue Medien 
  * @package    downloadarchive
  */
-class ModuleDownloadArchiv extends Module
+class ModuleDownloadarchive extends \Module
 {
 
 	/**

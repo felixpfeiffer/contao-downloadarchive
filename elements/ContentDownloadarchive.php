@@ -35,7 +35,7 @@
  * @author     Felix Pfeiffer :: Neue Medien 
  * @package    downloadarchive
  */
-class ContentDownloadarchiv extends ContentElement
+class ContentDownloadarchive extends \ContentElement
 {
 
 	/**

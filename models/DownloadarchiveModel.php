@@ -24,14 +24,14 @@ namespace FelixPfeiffer\Downloadarchive;
  * @author    Leo Feyer <https://github.com/leofeyer>
  * @copyright Leo Feyer 2005-2013
  */
-class NewsArchiveModel extends \Model
+class DownloadarchiveModel extends \Model
 {
 
 	/**
 	 * Table name
 	 * @var string
 	 */
-	protected static $strTable = 'tl_news_archive';
+	protected static $strTable = 'tl_downloadarchiv';
 
 
 	/**

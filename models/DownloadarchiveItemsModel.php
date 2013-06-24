@@ -24,7 +24,7 @@ namespace FelixPfeiffer\Downloadarchive;
  * @author    Leo Feyer <https://github.com/leofeyer>
  * @copyright Leo Feyer 2005-2013
  */
-class NewsModel extends \Model
+class DownloadarchiveItemsModel extends \Model
 {
 
 	/**
