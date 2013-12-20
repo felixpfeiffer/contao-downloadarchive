@@ -42,7 +42,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['downloadarchiv'] = array
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
 	'foreignKey'              => 'tl_downloadarchiv.title',
-	'eval'                    => array('multiple'=>true, 'mandatory'=>true)
+	'eval'                    => array('multiple'=>true, 'mandatory'=>true),
+    'sql'                     => "varchar(255) NOT NULL default ''"
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['downloadShowMeta'] = array
@@ -50,7 +51,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['downloadShowMeta'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['downloadShowMeta'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'                    => array()
+	'eval'                    => array(),
+    'sql'                     => "char(1) NOT NULL default '1'"
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['downloadHideDate'] = array
@@ -58,7 +60,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['downloadHideDate'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['downloadHideDate'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'                    => array()
+	'eval'                    => array(),
+    'sql'                     => "char(1) NOT NULL default '0'"
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['downloadSorting'] = array
@@ -69,7 +72,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['downloadSorting'] = array
 	'default'		  => 'sorting ASC',
 	'options'                 => array('sorting ASC','sorting DESC','tstamp ASC','tstamp DESC','title ASC','title DESC'),
 	'reference'				  => &$GLOBALS['TL_LANG']['tl_module']['downloadarchivSortingOptions'],
-	'eval'                    => array()
+	'eval'                    => array(),
+    'sql'                     => "varchar(25) NOT NULL default ''"
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['downloadNumberOfItems'] = array
@@ -78,7 +82,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['downloadNumberOfItems'] = array
 	'default'                 => 0,
 	'exclude'                 => true,
 	'inputType'               => 'text',
-	'eval'                    => array('rgxp'=>'digit', 'tl_class'=>'w50')
+	'eval'                    => array('rgxp'=>'digit', 'tl_class'=>'w50'),
+    'sql'                     => "smallint(5) unsigned NOT NULL default '0'"
 );
 
 ?>

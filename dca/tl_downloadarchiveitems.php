@@ -32,24 +32,23 @@
 $this->loadLanguageFile('tl_content');
 
 /**
- * Table tl_downloadarchiveitems 
+ * Table tl_downloadarchivitems 
  */
-$GLOBALS['TL_DCA']['tl_downloadarchiveitems'] = array
+$GLOBALS['TL_DCA']['tl_downloadarchivitems'] = array
 (
 
 	// Config
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
-		'ptable'					  => 'tl_downloadarchive',
+		'ptable'					  => 'tl_downloadarchiv',
 		'enableVersioning'            => true,
         'sql' => array
         (
             'keys' => array
             (
                 'id' => 'primary',
-                'pid' => 'index',
-                'title' => 'index'
+                'pid' => 'index'
             )
         )
 	),
@@ -63,7 +62,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchiveitems'] = array
 			'fields'                  => array('sorting'),
 			'panelLayout'             => 'search,limit',
 			'headerFields'            => array('title'),
-			'child_record_callback'   => array('tl_downloadarchiveitems', 'listFiles')
+			'child_record_callback'   => array('tl_downloadarchivitems', 'listFiles')
 		),
 		'global_operations' => array
 		(
@@ -79,41 +78,41 @@ $GLOBALS['TL_DCA']['tl_downloadarchiveitems'] = array
 		(
 			'edit' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchiveitems']['edit'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['edit'],
 				'href'                => 'act=edit',
 				'icon'                => 'edit.gif'
 			),
 			'copy' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchiveitems']['copy'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['copy'],
 				'href'                => 'act=paste&amp;mode=copy',
 				'icon'                => 'copy.gif',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"'
 			),
 			'cut' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchiveitems']['cut'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['cut'],
 				'href'                => 'act=paste&amp;mode=cut',
 				'icon'                => 'cut.gif',
 				'attributes'          => 'onclick="Backend.getScrollOffset();"'
 			),
 			'delete' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchiveitems']['delete'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['delete'],
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
-				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['tl_downloadarchiveitems']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
+				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['tl_downloadarchivitems']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
 			),
 			'toggle' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchiveitems']['toggle'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['toggle'],
 				'icon'                => 'visible.gif',
 				'attributes'          => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
-				'button_callback'     => array('tl_downloadarchiveitems', 'toggleIcon')
+				'button_callback'     => array('tl_downloadarchivitems', 'toggleIcon')
 			),
 			'show' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchiveitems']['show'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['show'],
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
 			)
@@ -155,7 +154,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchiveitems'] = array
         ),
         'title' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiveitems']['title'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['title'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
@@ -163,7 +162,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchiveitems'] = array
 		),
 		'description' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiveitems']['description'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['description'],
 			'exclude'                 => true,
 			'inputType'               => 'textarea',
 			'eval'                    => array('rte'=>'tinyMCE'),
@@ -171,7 +170,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchiveitems'] = array
 		),
 		'singleSRC' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiveitems']['singleSRC'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['singleSRC'],
 			'exclude'                 => true,
 			'inputType'               => 'fileTree',
 			'eval'                    => array('mandatory'=>true,'files'=>true,'fieldType'=>'radio'),
@@ -179,7 +178,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchiveitems'] = array
 		),
 		'protected' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiveitems']['protected'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['protected'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 			'eval'                    => array('submitOnChange'=>true),
@@ -187,14 +186,14 @@ $GLOBALS['TL_DCA']['tl_downloadarchiveitems'] = array
 		),
 		'guests' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiveitems']['guests'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['guests'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
             'sql'                     => "char(1) NOT NULL default ''"
 		),
 		'groups' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiveitems']['groups'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['groups'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 			'foreignKey'              => 'tl_member_group.name',
@@ -203,7 +202,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchiveitems'] = array
 		),
 		'addImage' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiveitems']['addImage'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['addImage'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 			'eval'                    => array('submitOnChange'=>true),
@@ -266,25 +265,25 @@ $GLOBALS['TL_DCA']['tl_downloadarchiveitems'] = array
 		),
 		'useImage' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiveitems']['useImage'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['useImage'],
 			'exclude'                 => true,
 			'default'                 => '0',
 			'inputType'               => 'radio',
 			'options'				  => array('0','1','2'),
-			'reference'               => &$GLOBALS['TL_LANG']['tl_downloadarchiveitems']['useImageReference'],
+			'reference'               => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['useImageReference'],
 			'eval'					  => array('tl_class'=>'w50'),
             'sql'                     => "char(1) NOT NULL default '0'"
 		),
 		'published' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiveitems']['published'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['published'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
             'sql'                     => "char(1) NOT NULL default '0'"
 		),
 		'start' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiveitems']['start'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['start'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
@@ -292,7 +291,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchiveitems'] = array
 		),
 		'stop' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiveitems']['stop'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchivitems']['stop'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
@@ -302,14 +301,14 @@ $GLOBALS['TL_DCA']['tl_downloadarchiveitems'] = array
 );
 
 /**
- * Class tl_downloadarchiveitems
+ * Class tl_downloadarchivitems
  *
  * Provide miscellaneous methods that are used by the data configuration array.
  * @copyright  Leo Feyer 2005
  * @author     Leo Feyer <leo@typolight.org>
  * @package    Controller
  */
-class tl_downloadarchiveitems extends Backend
+class tl_downloadarchivitems extends Backend
 {
 
 	/**
@@ -359,7 +358,7 @@ h52' : '') . 'block">
 		}
 
 		// Check permissions AFTER checking the tid, so hacking attempts are logged
-		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_downloadarchiveitems::published', 'alexf'))
+		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_downloadarchivitems::published', 'alexf'))
 		{
 			return '';
 		}
@@ -386,12 +385,12 @@ h52' : '') . 'block">
 		$this->Input->setGet('id', $intId);
 		$this->Input->setGet('act', 'toggle');
 
-		$this->createInitialVersion('tl_downloadarchiveitems', $intId);
+		$this->createInitialVersion('tl_downloadarchivitems', $intId);
 	
 		// Trigger the save_callback
-		if (is_array($GLOBALS['TL_DCA']['tl_downloadarchiveitems']['fields']['published']['save_callback']))
+		if (is_array($GLOBALS['TL_DCA']['tl_downloadarchivitems']['fields']['published']['save_callback']))
 		{
-			foreach ($GLOBALS['TL_DCA']['tl_downloadarchiveitems']['fields']['published']['save_callback'] as $callback)
+			foreach ($GLOBALS['TL_DCA']['tl_downloadarchivitems']['fields']['published']['save_callback'] as $callback)
 			{
 				$this->import($callback[0]);
 				$blnVisible = $this->$callback[0]->$callback[1]($blnVisible, $this);
@@ -399,10 +398,10 @@ h52' : '') . 'block">
 		}
 
 		// Update the database
-		$this->Database->prepare("UPDATE tl_downloadarchiveitems SET tstamp=". time() .", published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
+		$this->Database->prepare("UPDATE tl_downloadarchivitems SET tstamp=". time() .", published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
 					   ->execute($intId);
 
-		$this->createNewVersion('tl_downloadarchiveitems', $intId);
+		$this->createNewVersion('tl_downloadarchivitems', $intId);
 
 	}
 }
