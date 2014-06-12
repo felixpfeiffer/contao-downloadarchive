@@ -11,16 +11,16 @@
  */
 
 
-class DownloadarchiveRunonce extends Controller
+class DownloadarchiveRunonce
 {
 
     public function run()
     {
-        $this->import('Database');
+        $objDatabase = \Database::getInstance();
 
-        if ($this->Database->tabelExists('tl_downloadarchiv') && $this->Database->tabelExists('tl_downloadarchivitems'))
+        if ($objDatabase->tabelExists('tl_downloadarchiv') && $objDatabase->tabelExists('tl_downloadarchivitems'))
         {
-            $this->Database->execute("RENAME TABLE tl_downloadarchiv TO tl_downloadarchive, tl_downloadarchivitems TO tl_downloadarchiveitems;");
+            $objDatabase->execute("RENAME TABLE tl_downloadarchiv TO tl_downloadarchive, tl_downloadarchivitems TO tl_downloadarchiveitems;");
         }
     }
 }
