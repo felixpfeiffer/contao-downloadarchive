@@ -31,7 +31,7 @@ class DownloadarchiveModel extends \Model
 	 * Table name
 	 * @var string
 	 */
-	protected static $strTable = 'tl_downloadarchiv';
+	protected static $strTable = 'tl_downloadarchive';
 
 
 	/**

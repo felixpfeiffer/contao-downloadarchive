@@ -31,25 +31,25 @@
 $this->loadLanguageFile('tl_content');
 
 /**
- * Table tl_downloadarchiv 
+ * Table tl_downloadarchive 
  */
-$GLOBALS['TL_DCA']['tl_downloadarchiv'] = array
+$GLOBALS['TL_DCA']['tl_downloadarchive'] = array
 (
 
 	// Config
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
-		'ctable'					  => array('tl_downloadarchivitems'),
+		'ctable'					  => array('tl_downloadarchiveitems'),
 		'enableVersioning'            => true,
 		'switchToEdit'				  => true,
 		'onload_callback'             => array
 		(
-			array('tl_downloadarchiv', 'checkPermission')
+			array('tl_downloadarchive', 'checkPermission')
 		),
 		'onsubmit_callback'			  => array
         (
-            array('tl_downloadarchiv','loadDirectory')
+            array('tl_downloadarchive','loadDirectory')
         ),
         'sql' => array
         (
@@ -89,28 +89,34 @@ $GLOBALS['TL_DCA']['tl_downloadarchiv'] = array
 		(
 			'edit' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchiv']['edit'],
-				'href'                => 'table=tl_downloadarchivitems',
+				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchive']['edit'],
+				'href'                => 'table=tl_downloadarchiveitems',
 				'icon'                => 'edit.gif'
 			),
+            'editheader' => array
+            (
+                'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchive']['editheader'],
+                'href'                => 'act=edit',
+                'icon'                => 'header.gif'
+            ),
 			'copy' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchiv']['copy'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchive']['copy'],
 				'href'                => 'act=copy',
 				'icon'                => 'copy.gif',
-				'button_callback'     => array('tl_downloadarchiv', 'copyArchive')
+				'button_callback'     => array('tl_downloadarchive', 'copyArchive')
 			),
 			'delete' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchiv']['delete'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchive']['delete'],
 				'href'                => 'act=delete',
 				'icon'                => 'delete.gif',
-				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['tl_downloadarchiv']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
-				'button_callback'     => array('tl_downloadarchiv', 'deleteArchive')
+				'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['tl_downloadarchive']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
+				'button_callback'     => array('tl_downloadarchive', 'deleteArchive')
 			),
 			'show' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchiv']['show'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_downloadarchive']['show'],
 				'href'                => 'act=show',
 				'icon'                => 'show.gif'
 			)
@@ -143,7 +149,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchiv'] = array
         ),
         'title' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiv']['title'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchive']['title'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
@@ -151,7 +157,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchiv'] = array
 		),
 		'loadDirectory' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiv']['loadDirectory'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchive']['loadDirectory'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 			'eval'                    => array('submitOnChange'=>true),
@@ -159,7 +165,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchiv'] = array
 		),
 		'loadSubdir' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiv']['loadSubdir'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchive']['loadSubdir'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 			'eval'                    => array(),
@@ -167,7 +173,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchiv'] = array
 		),
 		'dirSRC' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiv']['dirSRC'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchive']['dirSRC'],
 			'exclude'                 => true,
 			'inputType'               => 'fileTree',
 			'eval'                    => array('files'=>false, 'fieldType'=>'radio'),
@@ -175,7 +181,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchiv'] = array
 		),
 		'prefix' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiv']['prefix'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchive']['prefix'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>100),
@@ -183,7 +189,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchiv'] = array
 		),
 		'extension' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiv']['extension'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchive']['extension'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255),
@@ -191,7 +197,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchiv'] = array
 		),
 		'publishAll' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiv']['publishAll'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchive']['publishAll'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 			'eval'                    => array(),
@@ -199,7 +205,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchiv'] = array
 		),
 		'class' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiv']['class'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchive']['class'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255),
@@ -207,7 +213,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchiv'] = array
 		),
 		'published' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiv']['published'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchive']['published'],
 			'default'				  => true,
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
@@ -215,7 +221,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchiv'] = array
 		),
 		'start' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiv']['start'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchive']['start'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
@@ -223,7 +229,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchiv'] = array
 		),
 		'stop' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchiv']['stop'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchive']['stop'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
@@ -234,14 +240,14 @@ $GLOBALS['TL_DCA']['tl_downloadarchiv'] = array
 
 
 /**
- * Class tl_downloadarchiv
+ * Class tl_downloadarchive
  *
  * Provide miscellaneous methods that are used by the data configuration array.
  * @copyright  2008 Felix Pfeiffer : Neue Medien
  * @author     Felix Pfeiffer <info@felixpfeiffer.com>
  * @package    Downlaodarchiv
  */
-class tl_downloadarchiv extends Backend
+class tl_downloadarchive extends Backend
 {
 	/**
 	 * Import the back end user object
@@ -254,7 +260,7 @@ class tl_downloadarchiv extends Backend
 	
 	
 	/**
-	 * Check permissions to edit table tl_downloadarchiv
+	 * Check permissions to edit table tl_downloadarchive
 	 */
 	public function checkPermission()
 	{
@@ -274,13 +280,13 @@ class tl_downloadarchiv extends Backend
 			$root = $this->User->downloadarchives;
 		}
 
-		$GLOBALS['TL_DCA']['tl_downloadarchiv']['list']['sorting']['root'] = $root;
+		$GLOBALS['TL_DCA']['tl_downloadarchive']['list']['sorting']['root'] = $root;
 
 		
 		// Check permissions to add downloadarchives
 		if (!$this->User->hasAccess('create', 'downloadarchivep'))
 		{
-			$GLOBALS['TL_DCA']['tl_downloadarchiv']['config']['closed'] = true;
+			$GLOBALS['TL_DCA']['tl_downloadarchive']['config']['closed'] = true;
 		}
 
 		// Check current action
@@ -297,7 +303,7 @@ class tl_downloadarchiv extends Backend
 				{
 					$arrNew = $this->Session->get('new_records');
 
-					if (is_array($arrNew['tl_downloadarchiv']) && in_array($this->Input->get('id'), $arrNew['tl_downloadarchiv']))
+					if (is_array($arrNew['tl_downloadarchive']) && in_array($this->Input->get('id'), $arrNew['tl_downloadarchive']))
 					{
 						
 						// Add permissions on user level
@@ -350,7 +356,7 @@ class tl_downloadarchiv extends Backend
 			case 'show':
 				if (!in_array($this->Input->get('id'), $root) || ($this->Input->get('act') == 'delete' && !$this->User->hasAccess('delete', 'downloadarchivep')))
 				{
-					$this->log('Not enough permissions to '.$this->Input->get('act').' calendar ID "'.$this->Input->get('id').'"', 'tl_downloadarchiv checkPermission', TL_ERROR);
+					$this->log('Not enough permissions to '.$this->Input->get('act').' calendar ID "'.$this->Input->get('id').'"', 'tl_downloadarchive checkPermission', TL_ERROR);
 					$this->redirect('contao/main.php?act=error');
 				}
 				break;
@@ -373,7 +379,7 @@ class tl_downloadarchiv extends Backend
 			default:
 				if (strlen($this->Input->get('act')))
 				{
-					$this->log('Not enough permissions to '.$this->Input->get('act').' downloadarchives', 'tl_downloadarchiv checkPermission', TL_ERROR);
+					$this->log('Not enough permissions to '.$this->Input->get('act').' downloadarchives', 'tl_downloadarchive checkPermission', TL_ERROR);
 					$this->redirect('contao/main.php?act=error');
 				}
 				break;
@@ -388,11 +394,11 @@ class tl_downloadarchiv extends Backend
 	 */
 	public function loadDirectory(DC_Table $dc)
 	{
-		$objPS = $this->Database->prepare("SELECT * FROM tl_downloadarchiv WHERE id=?")
+		$objPS = $this->Database->prepare("SELECT * FROM tl_downloadarchive WHERE id=?")
 					  ->limit(1)
 					  ->execute($dc->id);
 		
-		$objPSI = $this->Database->prepare("SELECT * FROM tl_downloadarchivitems WHERE pid=?")
+		$objPSI = $this->Database->prepare("SELECT * FROM tl_downloadarchiveitems WHERE pid=?")
 					   ->execute($dc->id);
 		
 		if($objPS->loadDirectory==1 && $objPSI->numRows==0)
@@ -420,7 +426,7 @@ class tl_downloadarchiv extends Backend
 					'published' =>($objPS->publishAll == 1 ? 1 : 0) 
 				);
 				
-				$objPSIW = $this->Database->prepare("INSERT INTO tl_downloadarchivitems %s")
+				$objPSIW = $this->Database->prepare("INSERT INTO tl_downloadarchiveitems %s")
 										  ->set($arrValues)
 										  ->execute();
 			}

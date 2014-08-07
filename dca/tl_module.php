@@ -30,7 +30,7 @@
 /**
  * Add palettes to tl_module
  */
-$GLOBALS['TL_DCA']['tl_module']['palettes']['downloadarchiv']   = '{title_legend},name,headline,type;{downloadarchive_legend},downloadarchiv,downloadSorting,downloadNumberOfItems,perPage;{downloadmeta_legend:hide},downloadShowMeta,downloadHideDate;{expert_legend:hide},cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['downloadarchive']   = '{title_legend},name,headline,type;{downloadarchive_legend},downloadarchiv,downloadSorting,downloadNumberOfItems,perPage;{downloadmeta_legend:hide},downloadShowMeta,downloadHideDate;{expert_legend:hide},cssID,space';
 
 
 /**
@@ -41,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['downloadarchiv'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['downloadarchiv'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'foreignKey'              => 'tl_downloadarchiv.title',
+	'foreignKey'              => 'tl_downloadarchive.title',
 	'eval'                    => array('multiple'=>true, 'mandatory'=>true),
     'sql'                     => "varchar(255) NOT NULL default ''"
 );

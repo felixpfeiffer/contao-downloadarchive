@@ -1,4 +1,4 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
  * TYPOlight webCMS
@@ -26,12 +26,16 @@
  * @filesource
  */
 
+/**
+ * Run in a custom namespace, so the class can be replaced
+ */
+namespace FelixPfeiffer\Downloadarchive;
 
 /**
  * Class ContentDownload
  *
  * Front end content element "download".
- * @copyright  Felix Pfeiffer 2008 
+ * @copyright  Felix Pfeiffer 2008 - 2014
  * @author     Felix Pfeiffer :: Neue Medien 
  * @package    downloadarchive
  */
@@ -42,7 +46,7 @@ class ContentDownloadarchive extends \ContentElement
 	 * Template
 	 * @var string
 	 */
-	protected $strTemplate = 'ce_downloadarchiv';
+	protected $strTemplate = 'ce_downloadarchive';
 	
 	/**
 	 * Download-archives
@@ -75,19 +79,17 @@ class ContentDownloadarchive extends \ContentElement
 			$title = array();
 			foreach($this->arrDownloadarchives as $archive)
 			{
-				$objDownloadarchiv = $this->Database->prepare("SELECT * FROM tl_downloadarchiv WHERE id=?")
-												->limit(1)
-										  		->execute($archive);
+				$objDownloadarchive = \FelixPfeiffer\Downloadarchive\DownloadarchiveModel::findByPk($archive);
 			
-				$title[] = $objDownloadarchiv->title;
+				$title[] = $objDownloadarchive->title;
 			}
 
-			
-					
-			$this->Template = new BackendTemplate('be_wildcard');
-			$this->Template->wildcard = '### Downloadarchiv: ' . implode(", ",$title) . ' ###';
+            $objTemplate = new \BackendTemplate('be_wildcard');
 
-			return $this->Template->parse();
+            $objTemplate->wildcard = '### ' . utf8_strtoupper($GLOBALS['TL_LANG']['FMD']['downloadarchive'][0]) . ' - ' . implode(", ",$title) . ' ###';
+
+            return $objTemplate->parse();
+
 		}	
 
 		$this->checkForPublishedArchives();

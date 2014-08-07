@@ -33,7 +33,7 @@
 
 $GLOBALS['BE_MOD']['content']['downloadarchive'] = array
 		(
-			'tables' => array('tl_downloadarchiv', 'tl_downloadarchivitems'),
+			'tables' => array('tl_downloadarchive', 'tl_downloadarchiveitems'),
 			'icon'   => 'system/modules/downloadarchive/assets/downloadarchive.gif'
 		);
 
@@ -51,7 +51,7 @@ array_insert($GLOBALS['FE_MOD'], 4, array
 /**
  * Content Element
  */
-$GLOBALS['TL_CTE']['files']['downloadarchive'] = 'ContentDownloadarchive';
+$GLOBALS['TL_CTE']['files']['downloadarchive'] = 'Downloadarchive\\ContentDownloadarchive';
 
 /**
  * Add permissions
@@ -59,4 +59,10 @@ $GLOBALS['TL_CTE']['files']['downloadarchive'] = 'ContentDownloadarchive';
 $GLOBALS['TL_PERMISSIONS'][] = 'downloadarchives';
 $GLOBALS['TL_PERMISSIONS'][] = 'downloadarchivep';
 
+
+/**
+ * Register the model
+ */
+$GLOBALS['TL_MODELS']['downloadarchive'] = 'FelixPfeiffer\Downloadarchive\DownloadarchiveModel';
+$GLOBALS['TL_MODELS']['downloadarchive'] = 'FelixPfeiffer\Downloadarchive\DownloadarchiveItemsModel';
 ?>

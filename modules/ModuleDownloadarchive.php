@@ -26,6 +26,10 @@
  * @filesource
  */
 
+/**
+ * Run in a custom namespace, so the class can be replaced
+ */
+namespace FelixPfeiffer\Downloadarchive;
 
 /**
  * Class ModuleDownloadArchiv 
@@ -41,7 +45,7 @@ class ModuleDownloadarchive extends \Module
 	 * Template
 	 * @var string
 	 */
-	protected $strTemplate = 'mod_downloadarchiv';
+	protected $strTemplate = 'mod_downloadarchive';
 	
 	/**
 	 * Download-archives

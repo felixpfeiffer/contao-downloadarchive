@@ -23,8 +23,8 @@ class DownloadarchiveRunonce
             $objDatabase->execute("RENAME TABLE tl_downloadarchiv TO tl_downloadarchive, tl_downloadarchivitems TO tl_downloadarchiveitems;");
         }
     }
-}
 
+}
 
 $objDownloadarchiveRunonce = new DownloadarchiveRunonce();
 $objDownloadarchiveRunonce->run();

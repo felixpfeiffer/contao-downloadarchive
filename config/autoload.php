@@ -3,12 +3,21 @@
 /**
  * Contao Open Source CMS
  *
- * Copyright (c) 2005-2013 Leo Feyer
+ * Copyright (c) 2005-2014 Leo Feyer
  *
  * @package Downloadarchive
  * @link    https://contao.org
- * @license http://www.gnu.org/licenses/lgpl-3.0.assets LGPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
+
+
+/**
+ * Register the namespaces
+ */
+ClassLoader::addNamespaces(array
+(
+	'FelixPfeiffer',
+));
 
 
 /**
@@ -17,10 +26,14 @@
 ClassLoader::addClasses(array
 (
 	// Elements
-	'ContentDownloadarchive' => 'system/modules/downloadarchive/elements/ContentDownloadarchive.php',
+	'FelixPfeiffer\Downloadarchive\ContentDownloadarchive'                                  => 'system/modules/downloadarchive/elements/ContentDownloadarchive.php',
+
+	// Models
+	'FelixPfeiffer\Downloadarchive\DownloadarchiveItemsModel' => 'system/modules/downloadarchive/models/DownloadarchiveItemsModel.php',
+	'FelixPfeiffer\Downloadarchive\DownloadarchiveModel'      => 'system/modules/downloadarchive/models/DownloadarchiveModel.php',
 
 	// Modules
-	'ModuleDownloadarchive'  => 'system/modules/downloadarchive/modules/ModuleDownloadarchive.php',
+	'FelixPfeiffer\Downloadarchive\ModuleDownloadarchive'                                   => 'system/modules/downloadarchive/modules/ModuleDownloadarchive.php',
 ));
 
 
@@ -29,6 +42,6 @@ ClassLoader::addClasses(array
  */
 TemplateLoader::addFiles(array
 (
-	'ce_downloadarchiv'  => 'system/modules/downloadarchive/templates',
-	'mod_downloadarchiv' => 'system/modules/downloadarchive/templates',
+	'ce_downloadarchive'  => 'system/modules/downloadarchive/templates',
+	'mod_downloadarchive' => 'system/modules/downloadarchive/templates',
 ));
