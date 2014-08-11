@@ -1,24 +1,14 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
- * TYPOlight webCMS
+ * Contao Open Source CMS
  *
- * The TYPOlight webCMS is an accessible web content management system that 
- * specializes in accessibility and generates W3C-compliant HTML code. It 
- * provides a wide range of functionality to develop professional websites 
- * including a built-in search engine, form generator, file and user manager, 
- * CSS engine, multi-language support and many more. For more information and 
- * additional TYPOlight applications like the TYPOlight MVC Framework please 
- * visit the project website http://www.typolight.org.
+ * Copyright (c) 2005-2013 Leo Feyer
  *
- * This is the data container array for table tl_content.
- *
- * PHP version 5
- * @copyright  Felix Pfeiffer 2008 
- * @author     Felix Pfeiffer :: Neue Medien 
- * @package    downloadarchiv 
- * @license    LGPL 
- * @filesource
+ * @copyright  Felix Pfeiffer 2008
+ * @author     Felix Pfeiffer :: Neue Medien
+ * @package    downloadarchive
+ * @license    LGPL
  */
 
 
@@ -26,14 +16,14 @@
  * Table tl_content 
  */
 
-$GLOBALS['TL_DCA']['tl_content']['fields']['downloadarchiv'] = array
+$GLOBALS['TL_DCA']['tl_content']['fields']['downloadarchive'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_content']['downloadarchiv'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_content']['downloadarchive'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
 	'foreignKey'              => 'tl_downloadarchive.title',
 	'eval'                    => array('multiple'=>true, 'mandatory'=>true),
-    'sql'                     => "varchar(255) NOT NULL default ''"
+    'sql'                     => "text NULL"
 );
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['downloadShowMeta'] = array
@@ -75,6 +65,4 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['downloadSorting'] = array
     'sql'                     => "varchar(25) NOT NULL default ''"
 );
 
-$GLOBALS['TL_DCA']['tl_content']['palettes']['downloadarchive'] = '{type_legend},type,headline;{downloadarchive_legend},downloadarchiv,downloadSorting,downloadNumberOfItems,perPage;{downloadmeta_legend:hide},downloadShowMeta,downloadHideDate;{protected_legend:hide},protected,guests;{expert_legend:hide},cssID,space';
-
-?>
+$GLOBALS['TL_DCA']['tl_content']['palettes']['downloadarchive'] = '{type_legend},type,headline;{downloadarchive_legend},downloadarchive,downloadSorting,downloadNumberOfItems,perPage;{downloadmeta_legend:hide},downloadShowMeta,downloadHideDate;{protected_legend:hide},protected,guests;{expert_legend:hide},cssID,space';

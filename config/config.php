@@ -21,7 +21,7 @@
  * PHP version 5
  * @copyright  Felix Pfeiffer 2008-2012 
  * @author     Felix Pfeiffer :: Neue Medien 
- * @package    downloadarchiv 
+ * @package    downloadarchive
  * @license    LGPL 
  * @filesource
  */
@@ -44,7 +44,7 @@ array_insert($GLOBALS['FE_MOD'], 4, array
 (
 	'application' => array
 	(
-		'downloadarchive'   => 'ModuleDownloadarchive'
+		'downloadarchive'   => 'Downloadarchive\\ModuleDownloadarchive'
 	)
 ));
 
@@ -63,6 +63,6 @@ $GLOBALS['TL_PERMISSIONS'][] = 'downloadarchivep';
 /**
  * Register the model
  */
-$GLOBALS['TL_MODELS']['downloadarchive'] = 'FelixPfeiffer\Downloadarchive\DownloadarchiveModel';
-$GLOBALS['TL_MODELS']['downloadarchive'] = 'FelixPfeiffer\Downloadarchive\DownloadarchiveItemsModel';
+$GLOBALS['TL_MODELS']['tl_downloadarchive'] = 'FelixPfeiffer\Downloadarchive\DownloadarchiveModel';
+$GLOBALS['TL_MODELS']['tl_downloadarchiveitems'] = 'FelixPfeiffer\Downloadarchive\DownloadarchiveitemsModel';
 ?>

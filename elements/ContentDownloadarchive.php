@@ -1,29 +1,14 @@
 <?php
 
 /**
- * TYPOlight webCMS
- * Copyright (C) 2005 Leo Feyer
+ * Contao Open Source CMS
  *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at http://www.gnu.org/licenses/.
+ * Copyright (c) 2005-2013 Leo Feyer
  *
- * PHP version 5
- * @copyright  Felix Pfeiffer 2008 
- * @author     Felix Pfeiffer :: Neue Medien 
- * @package    downloadarchiv 
+ * @copyright  Felix Pfeiffer 2008
+ * @author     Felix Pfeiffer :: Neue Medien
+ * @package    downloadarchive
  * @license    LGPL
- * @filesource
  */
 
 /**
@@ -54,6 +39,8 @@ class ContentDownloadarchive extends \ContentElement
 	 */
 	protected $arrDownloadarchives = array();
 
+    protected $arrDownloadfiles = array();
+
 
 	/**
 	 * Return if the file does not exist
@@ -61,11 +48,11 @@ class ContentDownloadarchive extends \ContentElement
 	 */
 	public function generate()
 	{
-		$this->arrDownloadarchives = unserialize($this->downloadarchiv);
+		$this->arrDownloadarchives = unserialize($this->downloadarchive);
 		
-		if( $this->downloadarchiv != null && !is_array($this->arrDownloadarchives) )
+		if( $this->downloadarchive != null && !is_array($this->arrDownloadarchives) )
 		{
-			$this->arrDownloadarchives = array($this->downloadarchiv);
+			$this->arrDownloadarchives = array($this->downloadarchive);
 		}
 		
 		// Return if there are no categories
@@ -79,9 +66,9 @@ class ContentDownloadarchive extends \ContentElement
 			$title = array();
 			foreach($this->arrDownloadarchives as $archive)
 			{
-				$objDownloadarchive = \FelixPfeiffer\Downloadarchive\DownloadarchiveModel::findByPk($archive);
+				$objDownloadarchivee = \FelixPfeiffer\Downloadarchive\DownloadarchiveModel::findByPk($archive);
 			
-				$title[] = $objDownloadarchive->title;
+				$title[] = $objDownloadarchivee->title;
 			}
 
             $objTemplate = new \BackendTemplate('be_wildcard');
@@ -90,25 +77,65 @@ class ContentDownloadarchive extends \ContentElement
 
             return $objTemplate->parse();
 
-		}	
+		}
 
 		$this->checkForPublishedArchives();
-		
-		
-		// Send file to the browser
-		if (strlen($this->Input->get('file')))
-		{
-			$time = time();
-			$objDownloadarchiv = $this->Database->prepare("SELECT * FROM tl_downloadarchivitems WHERE pid IN (".implode(',',$this->arrDownloadarchives).") AND singleSRC=?" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
-										  		->execute($this->Input->get('file'));
-			
-			if($objDownloadarchiv->numRows < 1)
-			{
-				return;
-			}
-			
-			$this->sendFileToBrowser($this->Input->get('file'));
-		}
+
+        $this->import('FrontendUser', 'User');
+
+        foreach($this->arrDownloadarchives as $archive)
+        {
+
+            $objFiles = \FelixPfeiffer\Downloadarchive\DownloadarchiveitemsModel::findPublishedByPid($archive);
+
+            if($objFiles === null) continue;
+
+            while($objFiles->next())
+            {
+                $objFile = \FilesModel::findByUuid($objFiles->singleSRC);
+
+                if(!file_exists(TL_ROOT . '/' . $objFile->path) || ($objFiles->guests && FE_USER_LOGGED_IN) || ($objFiles->protected == 1 && !FE_USER_LOGGED_IN && !BE_USER_LOGGED_IN))
+                {
+                    continue;
+                }
+
+                $arrGroups = deserialize($objFiles->groups);
+
+                if ($objFiles->protected == 1 && is_array($arrGroups) && count(array_intersect($this->User->groups, $arrGroups)) < 1 && !BE_USER_LOGGED_IN)
+                {
+                    continue;
+                }
+
+                $allowedDownload = trimsplit(',', strtolower($GLOBALS['TL_CONFIG']['allowedDownload']));
+
+                if (!in_array($objFile->extension, $allowedDownload))
+                {
+                    continue;
+                }
+
+                $arrFile = $objFiles->row();
+
+                $filename = $objFile->path;
+
+                $arrFile['filename'] = $filename;
+
+                $this->arrDownloadfiles[$archive][$filename] = $arrFile;
+            }
+        }
+
+        $file = \Input::get('file', true);
+
+        // Send the file to the browser and do not send a 404 header (see #4632)
+        if ($file != '' && !preg_match('/^meta(_[a-z]{2})?\.txt$/', basename($file)))
+        {
+            foreach ($this->arrDownloadfiles as $k=>$archive)
+            {
+                if(array_key_exists($file,$archive))
+                {
+                    \Controller::sendFileToBrowser($file);
+                }
+            }
+        }
 
 
 		return parent::generate();
@@ -126,103 +153,74 @@ class ContentDownloadarchive extends \ContentElement
 		$arrDownloadFiles = array();
 		
 		$time = time();
-		
-		foreach($this->arrDownloadarchives as $archive)
+
+
+		foreach($this->arrDownloadfiles as $k=>$archive)
 		{
 			
-			$objArchive = $this->Database->prepare("SELECT * FROM tl_downloadarchiv WHERE id=?")
-											  ->execute($archive);
+			$objArchive = \FelixPfeiffer\Downloadarchive\DownloadarchiveModel::findByPk($k);
 			
-			$objDownloadarchiv = $this->Database->prepare("SELECT * FROM tl_downloadarchivitems WHERE pid=? " . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : "") . " ORDER BY ".$this->downloadSorting)
-											  ->execute($archive);
-											  
-			if($objDownloadarchiv->numRows < 1)
-			{
-				continue;
-			}
+            $strLightboxId = 'lightbox[' . substr(md5($objArchive->title . '_' . $objArchive->id), 0, 6) . ']';
 			
-			if ($objPage->outputFormat == 'xhtml')
+			foreach($archive as $f => $arrFile)
 			{
-				$strLightboxId = 'lightbox';
-			}
-			else
-			{
-				$strLightboxId = 'lightbox[' . substr(md5($objArchive->title . '_' . $objArchive->id), 0, 6) . ']';
-			}
-			
-			while($objDownloadarchiv->next())
-			{
-	
-				if(!file_exists($objDownloadarchiv->singleSRC) || ($objDownloadarchiv->guests && FE_USER_LOGGED_IN) || ($objDownloadarchiv->protected == 1 && !FE_USER_LOGGED_IN && !BE_USER_LOGGED_IN))
-				{	
-					continue;
-				}
-	
-				$this->import('FrontendUser', 'User');
-				$arrGroups = deserialize($objDownloadarchiv->groups);
-				
-				if ($objDownloadarchiv->protected == 1 && is_array($arrGroups) && count(array_intersect($this->User->groups, $arrGroups)) < 1 && !BE_USER_LOGGED_IN)
-				{
-					continue;
-				}
-	
-				$arrFile = $objDownloadarchiv->row();
-				
-				$objFile = new File($objDownloadarchiv->singleSRC);
-				$allowedDownload = trimsplit(',', strtolower($GLOBALS['TL_CONFIG']['allowedDownload']));
-				
-				if (!in_array($objFile->extension, $allowedDownload))
-				{
-					continue;
-				}
+
+                #$objFile = \FilesModel::findByUuid($arrFile['singleSRC']);
+                $objFile = new \File($f, true);
 
                 // Clean the RTE output
                 if ($objPage->outputFormat == 'xhtml')
                 {
-                    $objDownloadarchiv->description = $this->String->toXhtml($objDownloadarchiv->description);
+                    $arrFile['description'] = \String::toXhtml($arrFile['description']);
                 }
                 else
                 {
-                    $objDownloadarchiv->description = $this->String->toHtml5($objDownloadarchiv->description);
+                    $arrFile['description'] = \String::toHtml5($arrFile['description']);
                 }
 
-                $arrFile['description'] = $this->String->encodeEmail($objDownloadarchiv->description);
+                $arrFile['description'] = \String::encodeEmail($arrFile['description']);
 				$arrFile['css'] = ( $objArchive->class != "" ) ? $objArchive->class . ' ' : '';
+
 				$arrFile['ctime'] = $objFile->ctime;
 				$arrFile['ctimeformated'] = date($GLOBALS['TL_CONFIG']['dateFormat'], $objFile->ctime);
                 $arrFile['mtime'] = $objFile->mtime;
 				$arrFile['mtimeformated'] = date($GLOBALS['TL_CONFIG']['dateFormat'], $objFile->mtime);
                 $arrFile['atime'] = $objFile->mtime;
 				$arrFile['atimeformated'] = date($GLOBALS['TL_CONFIG']['dateFormat'], $objFile->atime);
-				
-				// Add an image
-				if ($objDownloadarchiv->addImage && is_file(TL_ROOT . '/' . $objDownloadarchiv->imgSRC))
-				{
-					$size = deserialize($objDownloadarchiv->size);
-					$src = $this->getImage($this->urlEncode($objDownloadarchiv->imgSRC), $size[0], $size[1], $size[2]);
-	
-					if (($imgSize = @getimagesize(TL_ROOT . '/' . $src)) !== false)
-					{
-						$arrFile['imgSize'] = ' ' . $imgSize[3];
-					}
-	
-					$arrFile['imgSrc'] = $src;
-					$arrFile['imgHref'] = $objDownloadarchiv->imgSRC;
-					$arrFile['alt'] = specialchars($objDownloadarchiv->alt);
-					$arrFile['imagemargin'] = $this->generateMargin(deserialize($objDownloadarchiv->imagemargin), 'padding');
-					$arrFile['floating'] = in_array($objDownloadarchiv->floating, array('left', 'right')) ? sprintf(' float:%s;', $objDownloadarchiv->floating) : '';
-					$arrFile['caption'] = $objDownloadarchiv->caption;
-					$arrFile['addImage'] = true;
-					
-					$arrFile['lightbox'] = ($objPage->outputFormat == 'xhtml' || VERSION < 2.11) ? ' rel="' . $strLightboxId . '"' : ' data-lightbox="' . substr($strLightboxId, 9, -1) . '"';
-					
-					$arrFile['useImage'] = $objDownloadarchiv->useImage;
-					
-				}
-				
+
+
+                // Add an image
+                if ($arrFile['addImage'] && $arrFile['imgSRC'] != '')
+                {
+                    $objModel = \FilesModel::findByUuid($arrFile['imgSRC']);
+
+                    if (is_file(TL_ROOT . '/' . $objModel->path))
+                    {
+                        $size = deserialize($arrFile['size']);
+
+                        $arrFile['imgSRC'] = $arrFile['imgSrc'] = \Image::get($objModel->path,$size[0],$size[1],$size[2]);
+
+                        // Image dimensions
+                        if (($imgSize = @getimagesize(TL_ROOT .'/'. rawurldecode($arrFile['imgSRC']))) !== false)
+                        {
+                            $arrFile['arrSize'] = $imgSize;
+                            $arrFile['imageSize'] = ' ' . $imgSize[3];
+                        }
+
+                        $arrFile['imgHref'] = $objModel->path;
+                        $arrFile['alt'] = specialchars($arrFile['alt']);
+                        $arrFile['imagemargin'] = $this->generateMargin(deserialize($arrFile['imagemargin']), 'padding');
+                        $arrFile['floating'] = in_array($arrFile['floating'], array('left', 'right')) ? sprintf(' float:%s;', $arrFile['floating']) : '';
+                        $arrFile['addImage'] = true;
+
+                        $arrFile['lightbox'] = ($objPage->outputFormat == 'xhtml' || VERSION < 2.11) ? ' rel="' . $strLightboxId . '"' : ' data-lightbox="' . substr($strLightboxId, 9, -1) . '"';
+
+                    }
+                }
+
 				$arrFile['size'] = $this->getReadableSize($objFile->filesize);
-				
-				$src = 'system/themes/' . $this->getTheme() . '/images/' . $objFile->icon;
+
+				$src = TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon;
 				
 				if (($imgSize = @getimagesize(TL_ROOT . '/' . $src)) !== false)
 				{
@@ -230,13 +228,13 @@ class ContentDownloadarchive extends \ContentElement
 				}
 		
 				$arrFile['icon'] = $src;
-				$arrFile['href'] = $this->Environment->request . (stristr($this->Environment->request,'?') ? '&' : '?') . 'file=' . $this->urlEncode($objDownloadarchiv->singleSRC);
+				$arrFile['href'] = $this->Environment->request . (stristr($this->Environment->request,'?') ? '&' : '?') . 'file=' . $this->urlEncode($f);
 				
 				$arrFile['archive'] = $objArchive->title;
 				
 				$strSorting = str_replace(array(' ASC',' DESC'),'',$this->downloadSorting);
 				
-				$arrDownloadFiles[$objDownloadarchiv->$strSorting][] =  $arrFile;
+				$arrDownloadFiles[$arrFile[$strSorting]][] =  $arrFile;
 				
 			}
 		}
@@ -310,16 +308,12 @@ class ContentDownloadarchive extends \ContentElement
 	
 	protected function checkForPublishedArchives()
 	{
-		$time = time();
 		$arrNew = array();
-		
 		foreach($this->arrDownloadarchives as $archive)
 		{
-			$objDownloadarchiv = $this->Database->prepare("SELECT id FROM tl_downloadarchiv WHERE id=?" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
-											->limit(1)
-											->execute($archive);
+			$objDownloadarchive = \FelixPfeiffer\Downloadarchive\DownloadarchiveModel::findPublishedById($archive);
 			
-			if($objDownloadarchiv->numRows > 0) $arrNew[] = $objDownloadarchiv->id;
+			if($objDownloadarchive !== null) $arrNew[] = $objDownloadarchive->id;
 			
 		}
 		

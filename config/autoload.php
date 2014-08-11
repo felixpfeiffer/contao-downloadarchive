@@ -29,7 +29,7 @@ ClassLoader::addClasses(array
 	'FelixPfeiffer\Downloadarchive\ContentDownloadarchive'                                  => 'system/modules/downloadarchive/elements/ContentDownloadarchive.php',
 
 	// Models
-	'FelixPfeiffer\Downloadarchive\DownloadarchiveItemsModel' => 'system/modules/downloadarchive/models/DownloadarchiveItemsModel.php',
+	'FelixPfeiffer\Downloadarchive\DownloadarchiveitemsModel' => 'system/modules/downloadarchive/models/DownloadarchiveitemsModel.php',
 	'FelixPfeiffer\Downloadarchive\DownloadarchiveModel'      => 'system/modules/downloadarchive/models/DownloadarchiveModel.php',
 
 	// Modules
