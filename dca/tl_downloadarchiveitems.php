@@ -206,8 +206,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchiveitems'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_content']['size'],
 			'exclude'                 => true,
 			'inputType'               => 'imageSize',
-			/*'options'                 => array('crop', 'proportional', 'box'),*/
-			'options'                 => (VERSION < 2.11 ? array('crop', 'proportional', 'box') : $GLOBALS['TL_CROP']),
+			'options'                 => $GLOBALS['TL_CROP'],
 			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
 			'eval'                    => array('multiple'=>true, 'size'=>2, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(255) NOT NULL default ''"
