@@ -119,7 +119,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchive'] = array
 	// Subpalettes
 	'subpalettes' => array
 	(
-		'loadDirectory'                   => 'loadSubdir,extension,prefix,dirSRC,publishAll'
+		'loadDirectory'                   => 'dirSRC,loadSubdir,extension,prefix,publishAll'
 	),
 	
 	// Fields
@@ -154,7 +154,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchive'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchive']['loadSubdir'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
-			'eval'                    => array(),
+			'eval'                    => array('tl_class'=>'w50'),
             'sql'                     => "char(1) NOT NULL default ''"
 		),
 		'dirSRC' => array
@@ -162,15 +162,15 @@ $GLOBALS['TL_DCA']['tl_downloadarchive'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchive']['dirSRC'],
 			'exclude'                 => true,
 			'inputType'               => 'fileTree',
-			'eval'                    => array('files'=>false, 'fieldType'=>'radio'),
-            'sql'                     => "varchar(255) NOT NULL default ''"
+			'eval'                    => array('files'=>false, 'fieldType'=>'radio','tl_class'=>'w50'),
+            'sql'                     => "binary(16) NULL"
 		),
 		'prefix' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchive']['prefix'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>100),
+			'eval'                    => array('maxlength'=>100,'tl_class'=>'w50'),
             'sql'                     => "varchar(100) NOT NULL default ''"
 		),
 		'extension' => array
@@ -178,7 +178,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchive'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchive']['extension'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255),
+			'eval'                    => array('maxlength'=>255,'tl_class'=>'clr w50'),
             'sql'                     => "varchar(255) NOT NULL default ''"
 		),
 		'publishAll' => array
@@ -186,7 +186,7 @@ $GLOBALS['TL_DCA']['tl_downloadarchive'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_downloadarchive']['publishAll'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox',
-			'eval'                    => array(),
+			'eval'                    => array('tl_class'=>'clr m12'),
             'sql'                     => "char(1) NOT NULL default '0'"
 		),
 		'class' => array
@@ -380,88 +380,90 @@ class tl_downloadarchive extends Backend
 	 */
 	public function loadDirectory(DC_Table $dc)
 	{
-		$objPS = $this->Database->prepare("SELECT * FROM tl_downloadarchive WHERE id=?")
-					  ->limit(1)
-					  ->execute($dc->id);
-		
-		$objPSI = $this->Database->prepare("SELECT * FROM tl_downloadarchiveitems WHERE pid=?")
-					   ->execute($dc->id);
-		
-		if($objPS->loadDirectory==1 && $objPSI->numRows==0)
-		{
-			$strDirectory = $objPS->dirSRC;
-			$loadSubdir = $objPS->loadSubdir == 1 ? true : false;
-			$this->extension = $objPS->extension != "" ? explode(',',$objPS->extension) : array();
-			
-			$this->i = 0;
-			
-			$arrFiles = $this->getFiles($strDirectory, $objPS->prefix, $loadSubdir);
-			
-			ksort($arrFiles);
-			
-			$j = 0;
-			
-			foreach($arrFiles as $key=>$value)
-			{
-				$arrValues = array(
-					'pid'		=>$dc->id,
-					'sorting'	=>++$j * 64,
-					'tstamp'	=>time(),
-					'title'		=>str_replace('_',' ',$key),
-					'singleSRC'	=>$value,
-					'published' =>($objPS->publishAll == 1 ? 1 : 0) 
-				);
-				
-				$objPSIW = $this->Database->prepare("INSERT INTO tl_downloadarchiveitems %s")
-										  ->set($arrValues)
-										  ->execute();
-			}
-			
-		}
-		
+
+        $objItems = \FelixPfeiffer\Downloadarchive\DownloadarchiveitemsModel::findPublishedByPid($dc->id);
+
+        if(($objItems !== null && $objItems->numRows > 0) || !$dc->activeRecord->loadDirectory )
+        {
+            return;
+        }
+
+        $objFolder = \FilesModel::findByUuid($dc->activeRecord->dirSRC);
+
+        if($objFolder->type == 'file') return;
+
+        $this->extension = $dc->activeRecord->extension != '' ? (stristr(',',$dc->activeRecord->extension) ? explode($dc->activeRecord->extension,',') : array($dc->activeRecord->extension) ) : false;
+
+        $arrFiles = $this->getFiles($objFolder->uuid,$dc->activeRecords->loadSubdir);
+
+
+        if(!$arrFiles) return;
+
+        $i=0;
+
+        foreach($arrFiles as $file)
+        {
+            $objFile = new \File($file->path, true);
+
+            $title = specialchars($objFile->basename);
+
+            if($dc->activeRecord->prefix != '')
+            {
+                $title = $dc->activeRecord->prefix . ' ' . $i;
+            }
+
+            $varSet = array(
+                'pid'       => $dc->activeRecord->id,
+                'sorting'	=> ++$i * 64,
+                'tstamp'	=> time(),
+                'title'		=> $title,
+                'singleSRC'	=> $file->uuid,
+                'published' =>$dc->activeRecord->publishAll
+            );
+
+            \Database::getInstance()->prepare("INSERT INTO tl_downloadarchiveitems %s")
+                ->set($varSet)
+                ->execute();
+        }
 		
 	}
 	
-	public function getFiles($directory, $prefix, $loadSubdir=false)
+	public function getFiles($varFolder, $loadSubdir=false)
 	{
 		$arrFiles = array();
-		
-		foreach (scan(TL_ROOT . '/' . $directory) as $file)
-		{
-			
-			if (is_dir(TL_ROOT . '/' . $directory . '/' . $file))
-			{
-				if($loadSubdir)
-				{
-					$arrNew = $this->getFiles($directory . '/' . $file, $prefix, $loadSubdir);
-					if(is_array($arrNew) && is_array($arrFiles)) $arrFiles = array_merge($arrFiles, $arrNew);
-					elseif(is_array($arrNew) && !is_array($arrFiles)) $arrFiles = $arrNew;
-				}
-				else 
-				{
-					continue;
-				}
-			}
-			else
-			{	
-				$objFile = new File('/' . $directory . '/' . $file);
-				
-				if(count($this->extension) > 0 && !in_array($objFile->extension,$this->extension))
-				{
-					$objFile->close();
-					continue;
-				}
-				
-				$key = $prefix != "" ? $prefix . " " . str_pad(++$this->i,3,'0',STR_PAD_LEFT) : $objFile->filename;
-				$arrFiles[$key] = $directory . '/' . $file;
 
-				$objFile->close();
-			}
-			
-		}
-		
-		return $arrFiles;
-		
+        $objFiles = \FilesModel::findByPid($varFolder);
+
+        if ($objFiles === null)
+        {
+            return false;
+        }
+
+        while ($objFiles->next())
+        {
+
+            // Skip subfolders
+            if ($objFiles->type == 'folder')
+            {
+                #echo $objFiles->path . "<br>";
+                $varSubfiles = $this->getFiles($objFiles->uuid, $loadSubdir);
+
+                if($varSubfiles)
+                {
+                    $arrFiles = array_merge($arrFiles,$varSubfiles);
+                }
+
+                continue;
+            }
+
+            if(!in_array($objFiles->extension, $this->extension)) continue;
+
+            $arrFiles[] = $objFiles;
+        }
+
+        if(is_array($arrFiles) && count($arrFiles) > 0) return $arrFiles;
+        else return false;
+
 	}
 	
 
