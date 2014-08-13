@@ -392,7 +392,7 @@ class tl_downloadarchive extends Backend
 
         if($objFolder->type == 'file') return;
 
-        $this->extension = $dc->activeRecord->extension != '' ? (stristr(',',$dc->activeRecord->extension) ? explode($dc->activeRecord->extension,',') : array($dc->activeRecord->extension) ) : false;
+        $this->extension = $dc->activeRecord->extension != '' ? explode(',',$dc->activeRecord->extension) : false;
 
         $arrFiles = $this->getFiles($objFolder->uuid,$dc->activeRecords->loadSubdir);
 
@@ -456,7 +456,7 @@ class tl_downloadarchive extends Backend
                 continue;
             }
 
-            if(!in_array($objFiles->extension, $this->extension)) continue;
+            if($this->extension && !in_array($objFiles->extension, $this->extension)) continue;
 
             $arrFiles[] = $objFiles;
         }
