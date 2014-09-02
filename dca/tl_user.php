@@ -27,7 +27,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['downloadarchives'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['downloadarchives'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'foreignKey'              => 'tl_downloadarchiv.title',
+	'foreignKey'              => 'tl_downloadarchive.title',
 	'eval'                    => array('multiple'=>true),
     'sql'                     => "blob NULL"
 );
