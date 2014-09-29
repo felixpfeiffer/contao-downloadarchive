@@ -65,4 +65,4 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['downloadSorting'] = array
     'sql'                     => "varchar(25) NOT NULL default ''"
 );
 
-$GLOBALS['TL_DCA']['tl_content']['palettes']['downloadarchive'] = '{type_legend},type,headline;{downloadarchive_legend},downloadarchive,downloadSorting,downloadNumberOfItems,perPage;{downloadmeta_legend:hide},downloadShowMeta,downloadHideDate;{protected_legend:hide},protected,guests;{expert_legend:hide},cssID,space';
+$GLOBALS['TL_DCA']['tl_content']['palettes']['downloadarchive'] = '{type_legend},type,headline;{downloadarchive_legend},downloadarchive,downloadSorting,downloadNumberOfItems,perPage;{downloadmeta_legend:hide},downloadShowMeta,downloadHideDate;{template_legend:hide},customTpl;{protected_legend:hide},protected,guests;{expert_legend:hide},cssID,space';
