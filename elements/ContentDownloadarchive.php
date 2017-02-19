@@ -148,7 +148,7 @@ class ContentDownloadarchive extends \ContentElement
 	protected function compile()
 	{
 		global $objPage;
-        $this->import('String');
+        $this->import('StringUtil');
 		
 		$arrDownloadFiles = array();
 		
@@ -171,14 +171,14 @@ class ContentDownloadarchive extends \ContentElement
                 // Clean the RTE output
                 if ($objPage->outputFormat == 'xhtml')
                 {
-                    $arrFile['description'] = \String::toXhtml($arrFile['description']);
+                    $arrFile['description'] = \StringUtil::toXhtml($arrFile['description']);
                 }
                 else
                 {
-                    $arrFile['description'] = \String::toHtml5($arrFile['description']);
+                    $arrFile['description'] = \StringUtil::toHtml5($arrFile['description']);
                 }
 
-                $arrFile['description'] = \String::encodeEmail($arrFile['description']);
+                $arrFile['description'] = \StringUtil::encodeEmail($arrFile['description']);
 				$arrFile['css'] = ( $objArchive->class != "" ) ? $objArchive->class . ' ' : '';
 
 				$arrFile['ctime'] = $objFile->ctime;
@@ -276,7 +276,7 @@ class ContentDownloadarchive extends \ContentElement
 			$arrFiles = array_slice($arrFiles,$offset,$this->perPage);
 			
 			// Add pagination menu
-			$objPagination = new Pagination($length, $this->perPage);
+			$objPagination = new \Pagination($length, $this->perPage);
 			$this->Template->pagination = $objPagination->generate("\n  ");
 			
 			$length = count($arrFiles);
