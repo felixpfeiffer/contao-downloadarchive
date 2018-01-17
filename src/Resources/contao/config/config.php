@@ -1,4 +1,4 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
  * TYPOlight webCMS
@@ -18,8 +18,8 @@
  * License along with this program. If not, please visit the Free
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
- * PHP version 5
- * @copyright  Felix Pfeiffer 2008-2012 
+ * PHP version 7
+ * @copyright  Felix Pfeiffer 2008-2012, Steffen Winde 2018
  * @author     Felix Pfeiffer :: Neue Medien 
  * @package    downloadarchive
  * @license    LGPL 
@@ -34,7 +34,7 @@
 $GLOBALS['BE_MOD']['content']['downloadarchive'] = array
 		(
 			'tables' => array('tl_downloadarchive', 'tl_downloadarchiveitems'),
-			'icon'   => 'system/modules/downloadarchive/assets/downloadarchive.gif'
+			'icon'   => 'bundles/downloadarchive/assets/downloadarchive.gif'
 		);
 
 /**
@@ -44,14 +44,17 @@ array_insert($GLOBALS['FE_MOD'], 4, array
 (
 	'application' => array
 	(
-		'downloadarchive'   => 'Downloadarchive\\ModuleDownloadarchive'
+		'downloadarchive'   => 'FelixPfeiffer\Downloadarchive\ModuleDownloadarchive'
 	)
 ));
 
 /**
  * Content Element
  */
-$GLOBALS['TL_CTE']['files']['downloadarchive'] = 'Downloadarchive\\ContentDownloadarchive';
+array_insert($GLOBALS['TL_CTE']['files'],2,array (
+    'downloadarchive' => 'FelixPfeiffer\Downloadarchive\ContentDownloadarchive',
+));
+//$GLOBALS['TL_CTE']['files']['downloadarchive'] = 'FelixPfeiffer\Downloadarchive\ContentDownloadarchive';
 
 /**
  * Add permissions
