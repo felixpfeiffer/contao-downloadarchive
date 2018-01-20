@@ -21,7 +21,7 @@ class Plugin implements BundlePluginInterface
         return [
             BundleConfig::create('FelixPfeiffer\Downloadarchive\FelixpfeifferDownloadarchive')
                 ->setLoadAfter(['Contao\CoreBundle\ContaoCoreBundle'])
-                ->setReplace(['downloadarchive']),
+                ->setReplace(['contao-downloadarchive']),
         ];
     }
 }
