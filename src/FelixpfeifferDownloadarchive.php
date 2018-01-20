@@ -17,6 +17,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * @author Leo Feyer <https://github.com/leofeyer>
  */
-class FelixPfeifferDownloadarchive extends Bundle
+class FelixpfeifferDownloadarchive extends Bundle
 {
 }
