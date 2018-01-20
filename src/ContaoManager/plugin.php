@@ -1,12 +1,5 @@
 <?php
-/**
- * @copyright  Felix Pfeiffer 2018 <m.cupic@gmx.ch>
- * @author     Felix Pfeiffer
- * @package    GalleryCreatrBundle
- * @license    LGPL-3.0+
- * @see	       https://github.com/markocupic/gallery-creator-bundle
- *
- */
+
 namespace FelixPfeiffer\Downloadarchive\ContaoManager;
 
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
@@ -26,7 +19,7 @@ class Plugin implements BundlePluginInterface
     public function getBundles(ParserInterface $parser)
     {
         return [
-            BundleConfig::create('FelixPfeiffer\Downloadarchive\FelixPfeifferDownloadarchive')
+            BundleConfig::create('FelixPfeiffer\Downloadarchive\FelixpfeifferDownloadarchive')
                 ->setLoadAfter(['Contao\CoreBundle\ContaoCoreBundle'])
                 ->setReplace(['downloadarchive']),
         ];
