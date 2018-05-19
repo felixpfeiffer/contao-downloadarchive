@@ -1,6 +1,6 @@
 {
-	"name":"felixpfeiffer/contao-downloadarchive",
-	"description":"Define downloadarchives with permission for users to download single files.",
+	"name":"laemmi/contao-downloadarchive",
+	"description":"Define downloadarchives with permission for users to download single files. fork von felixpfeiffer/contao-downloadarchive",
 	"keywords":["download","archive","permission"],
 	"type":"contao-module",
 	"homepage":"http://www.felixpfeiffer.com/",
@@ -10,11 +10,15 @@
 			"name":"Felix Pfeiffer",
 			"homepage":"http://www.felixpfeiffer.com/",
 			"role":"Developer"
+		},
+		{
+			"name":"Michael Lämmlein",
+			"homepage":"https://www.spacerabbit.de/",
+			"role":"Developer"
 		}
 	],
 	"support":{
-		"issues":"https://github.com/felixpfeiffer/contao-downloadarchive/issues",
-		"source":"https://github.com/felixpfeiffer/contao-downloadarchive"
+		"source":"https://github.com/laemmi/contao-downloadarchive"
 	},
 	"require":{
 		"php":">=5.3",
