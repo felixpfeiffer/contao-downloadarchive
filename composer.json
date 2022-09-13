@@ -21,9 +21,9 @@
 		"source":"https://github.com/laemmi/contao-downloadarchive"
 	},
 	"require":{
-		"php":">=5.3",
-		"contao/core":">=3.2,<4",
-		"contao-community-alliance/composer-plugin":"~2.0"
+		"php": "^5.4|^7.0",
+		"contao/core-bundle": "~3.5 || ~4.4",
+		"contao-community-alliance/composer-plugin": "~2.4 || ~3.0"
 	},
 	"autoload":{
 		"classmap":[""]
@@ -36,6 +36,15 @@
 			"sources":{
 				"":"system/modules/downloadarchive"
 			}
+		}
+	},
+	"config": {
+		"platform": {
+			"php": "7.4"
+		},
+		"allow-plugins": {
+			"contao-components/installer": true,
+			"contao-community-alliance/composer-plugin": true
 		}
 	}
 }
