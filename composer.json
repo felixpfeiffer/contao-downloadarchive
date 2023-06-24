@@ -7,11 +7,6 @@
 	"license":"LGPL-3.0-or-later",
 	"authors":[
 		{
-			"name":"Felix Pfeiffer",
-			"homepage":"http://www.felixpfeiffer.com/",
-			"role":"Developer"
-		},
-		{
 			"name":"Michael Lämmlein",
 			"homepage":"https://www.spacerabbit.de/",
 			"role":"Developer"
